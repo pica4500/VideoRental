@@ -19,10 +19,12 @@ public class Video {
 		this.registeredDate = registeredDate;
 	}
 
+	// TODO : strategy 활용을 위한 getter, setter
 	public void setPriceCodeStrategy(PriceCodeStrategy pc){
 		this.pc = pc;
 	}
 
+	// TODO : strategy 활용을 위한 getter, setter
 	public void setVideoTypeStrategy(VideoTypeStrategy vt) {
 		 this.vt = vt;
 	}
@@ -30,14 +32,6 @@ public class Video {
 	public int getLateReturnPointPenalty() {
 		return this.vt.getPenalty();
 	}
-
-	public int getPriceCode() {
-		return this.pc.getPriceCode();
-	}
-
-//	public void setPriceCode(int priceCode) {
-//		this.priceCode = priceCode;
-//	}
 
 	public String getTitle() {
 		return title;
@@ -55,19 +49,7 @@ public class Video {
 		this.rented = rented;
 	}
 
-	public Date getRegisteredDate() {
-		return registeredDate;
+	public String printPriceTag(){
+		return String.format("\tTitle: %s \tPriceCode: %d", title, pc.getPriceCode());
 	}
-
-	public void setRegisteredDate(Date registeredDate) {
-		this.registeredDate = registeredDate;
-	}
-
-	public int getVideoType() {
-		return vt.getVideoType();
-	}
-
-//	public void setVideoType(int videoType) {
-//		this.videoType = videoType;
-//	}
 }

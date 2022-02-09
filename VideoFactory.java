@@ -48,7 +48,7 @@ public class VideoFactory {
     public static List<Video> createInitialVideos() {
         List<Video> ret = new ArrayList<>();
         ret.add(new Video("v1", new RegularType(VideoFactory.REGULAR), new CDVideoType(), new Date()));
-        ret.add(new Video("v1", new NewReleaseType(VideoFactory.NEW_RELEASE), new DVDVideoType(), new Date()));
+        ret.add(new Video("v2", new NewReleaseType(VideoFactory.NEW_RELEASE), new DVDVideoType(), new Date()));
         return ret;
     }
 }
