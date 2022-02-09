@@ -1,44 +1,36 @@
+import strategies.PriceCodeStrategy;
+import strategies.VideoTypeStrategy;
+
 import java.util.Date;
 
 public class Video {
 	private String title ;
 
-	private int priceCode ;
-	//type code
-	public static final int REGULAR = 1 ;
-	public static final int NEW_RELEASE =2 ;
-
-	private int videoType ;
-	//type code
-	public static final int VHS = 1 ;
-	public static final int CD = 2 ;
-	public static final int DVD = 3 ;
+	PriceCodeStrategy pc;
+	VideoTypeStrategy vt;
 
 	private Date registeredDate ;
 	private boolean rented ;
 
-	public Video(String title, int videoType, int priceCode, Date registeredDate) {
-		this.setTitle(title) ;
-		this.setVideoType(videoType) ;
-		this.setPriceCode(priceCode) ;
-		this.registeredDate = registeredDate ;
+	 public Video(String title, PriceCodeStrategy pc, VideoTypeStrategy vt, Date registeredDate){
+		this.setTitle(title);
+		this.pc = pc;
+		this.vt = vt;
+		this.registeredDate = registeredDate;
+	}
+
+	// TODO : strategy 활용을 위한 getter, setter
+	public void setPriceCodeStrategy(PriceCodeStrategy pc){
+		this.pc = pc;
+	}
+
+	// TODO : strategy 활용을 위한 getter, setter
+	public void setVideoTypeStrategy(VideoTypeStrategy vt) {
+		 this.vt = vt;
 	}
 
 	public int getLateReturnPointPenalty() {
-		int pentalty = 0 ;
-		switch ( videoType ) {
-			case VHS: pentalty = 1 ; break ;
-			case CD: pentalty = 2 ; break ;
-			case DVD: pentalty = 3 ; break ;
-		}
-		return pentalty ;
-	}
-	public int getPriceCode() {
-		return priceCode;
-	}
-
-	public void setPriceCode(int priceCode) {
-		this.priceCode = priceCode;
+		return this.vt.getPenalty();
 	}
 
 	public String getTitle() {
@@ -57,19 +49,7 @@ public class Video {
 		this.rented = rented;
 	}
 
-	public Date getRegisteredDate() {
-		return registeredDate;
-	}
-
-	public void setRegisteredDate(Date registeredDate) {
-		this.registeredDate = registeredDate;
-	}
-
-	public int getVideoType() {
-		return videoType;
-	}
-
-	public void setVideoType(int videoType) {
-		this.videoType = videoType;
+	public String printPriceTag(){
+		return String.format("\tTitle: %s \tPriceCode: %d", title, pc.getPriceCode());
 	}
 }

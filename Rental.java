@@ -11,13 +11,22 @@ public class Rental {
 		status = 0 ;
 		rentDate = new Date() ;
 	}
+	
+	public double calculateCharge(int daysRented){
+		return this.getVideo().pc.applyPolicy(daysRented);
+    }
+
+	public int calculatePoint(int dayRented){
+		int point = video.pc.getPoint();
+
+		if(dayRented>getDaysRentedLimit()){
+			point -=Math.min(point, video.getLateReturnPointPenalty());
+		}
+		return point;
+	}
 
 	public Video getVideo() {
 		return video;
-	}
-
-	public void setVideo(Video video) {
-		this.video = video;
 	}
 
 	public int getStatus() {
@@ -30,39 +39,37 @@ public class Rental {
 			returnDate = new Date() ;
 		}
 	}
-	public Date getRentDate() {
-		return rentDate;
+	public double getCharge() {
+		int daysRented = getDaysRented();
+		return calculateCharge(daysRented);
 	}
 
-	public void setRentDate(Date rentDate) {
-		this.rentDate = rentDate;
+	public int getPoint(){
+		int daysRented = getDaysRented();
+		return calculatePoint(daysRented);
 	}
 
-	public Date getReturnDate() {
-		return returnDate;
-	}
-
-	public void setReturnDate(Date returnDate) {
-		this.returnDate = returnDate;
+	public int getDaysRented() {
+		long diff;
+		if (getStatus() == 1) { // returned Video
+			diff = returnDate.getTime() - rentDate.getTime();
+		} else { // not yet returned
+			diff = new Date().getTime() - rentDate.getTime();
+		}
+		int daysRented = calcDaysRented(diff);
+		return daysRented;
 	}
 
 	public int getDaysRentedLimit() {
 		int limit = 0 ;
-		int daysRented ;
-		if (getStatus() == 1) { // returned Video
-			long diff = returnDate.getTime() - rentDate.getTime();
-			daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
-		} else { // not yet returned
-			long diff = new Date().getTime() - rentDate.getTime();
-			daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
-		}
+		int daysRented = this.getDaysRented();
 		if ( daysRented <= 2) return limit ;
-
-		switch ( video.getVideoType() ) {
-			case Video.VHS: limit = 5 ; break ;
-			case Video.CD: limit = 3 ; break ;
-			case Video.DVD: limit = 2 ; break ;
-		}
+		limit = video.vt.getLimit();
 		return limit ;
 	}
+
+	public int calcDaysRented(long diff) {
+		return (int) (diff / (1000 * 60 * 60 * 24)) + 1;
+	}
+
 }
