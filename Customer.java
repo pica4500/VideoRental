@@ -49,13 +49,13 @@ public class Customer {
 
 			// duplication
 			// Status
+			long diff = 0;
 			if (each.getStatus() == 1) { // returned Video
-				long diff = each.getReturnDate().getTime() - each.getRentDate().getTime();
-				daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
+				diff = each.getReturnDate().getTime() - each.getRentDate().getTime();
 			} else { // not yet returned
-				long diff = new Date().getTime() - each.getRentDate().getTime();
-				daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
+				diff = new Date().getTime() - each.getRentDate().getTime();
 			}
+			daysRented = each.getDaysRented(diff);
 
 			// Strategy 혹은 Subtyping
 			// magic number

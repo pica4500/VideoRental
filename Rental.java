@@ -12,7 +12,6 @@ public class Rental {
 		rentDate = new Date() ;
 	}
 
-	//임시 네이밍
 	public int calculatePoint(int dayRented){
 		int point = video.pc.getPoint();
 
@@ -58,18 +57,22 @@ public class Rental {
 
 	public int getDaysRentedLimit() {
 		int limit = 0 ;
-		int daysRented ;
+		long diff;
 		if (getStatus() == 1) { // returned Video
-			long diff = returnDate.getTime() - rentDate.getTime();
-			daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
+			diff = returnDate.getTime() - rentDate.getTime();
 		} else { // not yet returned
-			long diff = new Date().getTime() - rentDate.getTime();
-			daysRented = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
+			diff = new Date().getTime() - rentDate.getTime();
 		}
+		int daysRented = getDaysRented(diff);
 		if ( daysRented <= 2) return limit ;
 
 		limit = video.vt.getLimit();
 
 		return limit ;
 	}
+
+	public int getDaysRented(long diff) {
+		return (int) (diff / (1000 * 60 * 60 * 24)) + 1;
+	}
+
 }
