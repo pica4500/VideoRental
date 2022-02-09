@@ -4,7 +4,6 @@ import java.util.List;
 
 public class Customer {
 	private String name;
-
 	private List<Rental> rentals = new ArrayList<Rental>();
 
 	public Customer(String name) {
@@ -45,27 +44,13 @@ public class Customer {
 
 		for (Rental each : rentals) {
 
-			int daysRented = 0;
+			double eachCharge = each.getCharge();
+			int eachPoint = each.getPoint();
 
-			// duplication
-			// Status
-			long diff = 0;
-			if (each.getStatus() == 1) { // returned Video
-				diff = each.getReturnDate().getTime() - each.getRentDate().getTime();
-			} else { // not yet returned
-				diff = new Date().getTime() - each.getRentDate().getTime();
-			}
-			daysRented = each.getDaysRented(diff);
-
-			// Strategy 혹은 Subtyping
-			// magic number
-			double eachCharge = each.getVideo().pc.applyPolicy(daysRented);
-			int eachPoint = each.calculatePoint(daysRented);
-			result += "\t" + each.getVideo().getTitle() + "\tDays rented: " + daysRented + "\tCharge: " + eachCharge
+			result += "\t" + each.getVideo().getTitle() + "\tDays rented: " + each.getDaysRented() + "\tCharge: " + eachCharge
 					+ "\tPoint: " + eachPoint + "\n";
 
 			totalCharge += eachCharge;
-
 			totalPoint += eachPoint ;
 		}
 

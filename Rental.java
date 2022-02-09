@@ -11,6 +11,14 @@ public class Rental {
 		status = 0 ;
 		rentDate = new Date() ;
 	}
+	
+	boolean isRented() {
+		return this.status == 1;
+	}
+
+	public double calculateCharge(int daysRented){
+		return this.getVideo().pc.applyPolicy(daysRented);
+    }
 
 	public int calculatePoint(int dayRented){
 		int point = video.pc.getPoint();
@@ -54,24 +62,36 @@ public class Rental {
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
 	}
+	public double getCharge() {
+		int daysRented = getDaysRented();
+		return calculateCharge(daysRented);
+	}
 
-	public int getDaysRentedLimit() {
-		int limit = 0 ;
+	public int getPoint(){
+		int daysRented = getDaysRented();
+		return calculatePoint(daysRented);
+	}
+
+	public int getDaysRented() {
 		long diff;
 		if (getStatus() == 1) { // returned Video
 			diff = returnDate.getTime() - rentDate.getTime();
 		} else { // not yet returned
 			diff = new Date().getTime() - rentDate.getTime();
 		}
-		int daysRented = getDaysRented(diff);
+		int daysRented = calcDaysRented(diff);
+		return daysRented;
+	}
+
+	public int getDaysRentedLimit() {
+		int limit = 0 ;
+		int daysRented = this.getDaysRented();
 		if ( daysRented <= 2) return limit ;
-
 		limit = video.vt.getLimit();
-
 		return limit ;
 	}
 
-	public int getDaysRented(long diff) {
+	public int calcDaysRented(long diff) {
 		return (int) (diff / (1000 * 60 * 60 * 24)) + 1;
 	}
 
