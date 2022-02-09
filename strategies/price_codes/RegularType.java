@@ -16,8 +16,13 @@ public class RegularType implements PriceCodeStrategy {
     }
 
     @Override
-    public double applyPolicy(int daysRented, double eachCharge) {
-        double tempCharge = eachCharge + 2;
+    public int getPoint() {
+        return 1;
+    }
+
+    @Override
+    public double applyPolicy(int daysRented) {
+        double tempCharge = 2;
         return daysRented > 2 ? tempCharge + ((daysRented - 2) * 1.5) : tempCharge;
     }
 

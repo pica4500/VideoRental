@@ -14,8 +14,13 @@ public class NewReleaseType implements PriceCodeStrategy {
     public int getPriceCode() {
         return priceCode;
     }
+
+    public int getPoint() {
+        return 2;
+    }
+
     @Override
-    public double applyPolicy(int daysRented, double eachCharge) {
+    public double applyPolicy(int daysRented) {
         return daysRented *3;
     }
 }

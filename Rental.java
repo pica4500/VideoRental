@@ -12,6 +12,16 @@ public class Rental {
 		rentDate = new Date() ;
 	}
 
+	//임시 네이밍
+	public int calculatePoint(int dayRented){
+		int point = video.pc.getPoint();
+
+		if(dayRented>getDaysRentedLimit()){
+			point -=Math.min(point, video.getLateReturnPointPenalty());
+		}
+		return point;
+	}
+
 	public Video getVideo() {
 		return video;
 	}

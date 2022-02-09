@@ -44,8 +44,7 @@ public class Customer {
 		int totalPoint = 0;
 
 		for (Rental each : rentals) {
-			double eachCharge = 0;
-			int eachPoint = 0 ;
+
 			int daysRented = 0;
 
 			// duplication
@@ -60,17 +59,8 @@ public class Customer {
 
 			// Strategy 혹은 Subtyping
 			// magic number
-			eachCharge = each.getVideo().pc.applyPolicy(daysRented, eachCharge);
-
-			eachPoint++;
-
-			if ((each.getVideo().getPriceCode() == VideoFactory.NEW_RELEASE) )
-				eachPoint++;
-
-			if ( daysRented > each.getDaysRentedLimit() )
-				eachPoint -= Math.min(eachPoint, each.getVideo().getLateReturnPointPenalty()) ;
-
-			//
+			double eachCharge = each.getVideo().pc.applyPolicy(daysRented);
+			int eachPoint = each.calculatePoint(daysRented);
 			result += "\t" + each.getVideo().getTitle() + "\tDays rented: " + daysRented + "\tCharge: " + eachCharge
 					+ "\tPoint: " + eachPoint + "\n";
 
@@ -81,13 +71,16 @@ public class Customer {
 
 		result += "Total charge: " + totalCharge + "\tTotal Point:" + totalPoint + "\n";
 
+		printTotalPoint(totalPoint);
+		return result ;
+	}
 
+	private void printTotalPoint(int totalPoint) {
 		if ( totalPoint >= 10 ) {
 			System.out.println("Congrat! You earned one free coupon");
 		}
 		if ( totalPoint >= 30 ) {
 			System.out.println("Congrat! You earned two free coupon");
 		}
-		return result ;
 	}
 }
